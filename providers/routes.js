@@ -19,8 +19,11 @@ router.get('/', (req, res, next) => {
 });
 
 // Create provider
-router.post('/', (req, res) => {
-  res.json(req.body);
+router.post('/', (req, res, next) => {
+  const provider = new Provider(req.body);
+  provider.save()
+    .then(data => res.json(data))
+    .catch(next);
 });
 
 // Delete provider by id
