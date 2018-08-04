@@ -1,10 +1,21 @@
 const express = require('express');
 
+const Provider = require('./model');
+
 const router = express.Router();
 
 // Get all providers or receive one by id
-router.get('/', (req, res) => {
-  res.json({ id: req.query.id });
+router.get('/', (req, res, next) => {
+  const { id } = req.query;
+  if (!id) {
+    Provider.find()
+      .then(data => res.json(data))
+      .catch(next);
+  } else {
+    Provider.findById(id)
+      .then(data => res.json(data))
+      .catch(next);
+  }
 });
 
 // Create provider
