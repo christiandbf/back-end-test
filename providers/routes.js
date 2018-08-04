@@ -35,8 +35,11 @@ router.delete('/', (req, res, next) => {
 });
 
 // Update provider by id
-router.put('/', (req, res) => {
-  res.json({ id: req.query.id });
+router.put('/', (req, res, next) => {
+  const { id } = req.query;
+  Provider.findByIdAndUpdate(id, req.body)
+    .then(data => res.json(data))
+    .catch(next);
 });
 
 module.exports = router;
