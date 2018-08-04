@@ -27,8 +27,11 @@ router.post('/', (req, res, next) => {
 });
 
 // Delete provider by id
-router.delete('/', (req, res) => {
-  res.json({ id: req.query.id });
+router.delete('/', (req, res, next) => {
+  const { id } = req.query;
+  Provider.findByIdAndRemove(id)
+    .then(data => res.json(data))
+    .catch(next);
 });
 
 // Update provider by id
