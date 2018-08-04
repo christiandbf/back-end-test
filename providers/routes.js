@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const express = require('express');
 
 const Provider = require('./model');
@@ -37,9 +39,14 @@ router.delete('/', (req, res, next) => {
 // Update provider by id
 router.put('/', (req, res, next) => {
   const { id } = req.query;
-  Provider.findByIdAndUpdate(id, req.body)
+  const now = Date.now();
+  Provider.findByIdAndUpdate(id, { ...req.body, updatedAt: now })
     .then(data => res.json(data))
     .catch(next);
+});
+
+router.use((err, req, res, next) => {
+  res.status(400).json({ message: 'Bad request, revise the parameters provided' });
 });
 
 module.exports = router;

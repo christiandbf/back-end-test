@@ -10,8 +10,14 @@ const providerSchema = new Schema({
   city: String,
   adress: String,
   specialty: String,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: {
+    type: Date,
+    default() { return new Date().getTime(); },
+  },
+  updatedAt: {
+    type: Date,
+    default() { return new Date().getTime(); },
+  },
   document: String,
 });
 
