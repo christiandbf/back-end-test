@@ -22,7 +22,10 @@ router.get('/', (req, res, next) => {
 
 // Create provider
 router.post('/', (req, res, next) => {
-  const provider = new Provider(req.body);
+  const now = Date.now();
+  if (Object.keys(req.body).length === 0) next(new Error('Body empty'));
+  const dataToSave = { ...req.body, createdAt: now, updatedAt: now };
+  const provider = new Provider(dataToSave);
   provider.save()
     .then(data => res.json(data))
     .catch(next);
@@ -31,6 +34,7 @@ router.post('/', (req, res, next) => {
 // Delete provider by id
 router.delete('/', (req, res, next) => {
   const { id } = req.query;
+  if (!id) next(new Error('ID is not provided'));
   Provider.findByIdAndRemove(id)
     .then(data => res.json(data))
     .catch(next);
@@ -40,6 +44,8 @@ router.delete('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   const { id } = req.query;
   const now = Date.now();
+  if (!id) next(new Error('ID is not provided'));
+  if (Object.keys(req.body).length === 0) next(new Error('Body empty'));
   Provider.findByIdAndUpdate(id, { ...req.body, updatedAt: now })
     .then(data => res.json(data))
     .catch(next);
