@@ -4,7 +4,7 @@ CRUD for providers collection.
 
 ## Run
 
-* NodeJS version used 8.11.3.
+* **NodeJS version used 8.11.3**.
 
 1. Install the dependencies needed. Run the following command in the project root folder. 
 ```
@@ -79,7 +79,7 @@ GET /providers?id="ID provider to get"
 
 ### Delete provider
 
-Delete a provider. You pass the ID of the provider to delete in a query string, return the provider data deleted or null if the ID does not exist.
+Delete a provider. You pass the ID of the provider to delete in a query string.
 
 ```
 DELETE /providers?id="ID provider to delete"
@@ -119,7 +119,7 @@ You can use the following mime types in your Content-Type header and provide the
 * x-www-form-urlencoded (key par value).
 * application/json (json).
 
-The schema is defined as follow. All the properties are required.
+The schema is defined as follow. **All the properties are required**.
 ```
 name: String,
 lastname: String,
@@ -153,16 +153,17 @@ JSON example.
 #### Response
 ```
 {
-    "_id": "5b684afb09aa37668bebc4a0",
-    "name": "String",
-    "lastname": "String",
-    "status": "String",
-    "email": "String",
-    "city": "String",
-    "specialty": "String",
-    "document": "String",
-    "createdAt": "2018-08-06T13:19:55.020Z",
-    "updatedAt": "2018-08-06T13:19:55.020Z",
+    "_id": "5b6a0c66bf4d9d7be2e3c719",
+    "name": "Christian",
+    "lastname": "Barrios",
+    "status": "Active",
+    "email": "christiandbf@hotmail.com",
+    "city": "Cartagena",
+    "address": "Urb. Villa",
+    "specialty": "IT and electronic development",
+    "document": "123456789",
+    "createdAt": "2018-08-07T21:17:26.779Z",
+    "updatedAt": "2018-08-07T21:17:26.779Z",
     "__v": 0
 }
 ```
@@ -179,7 +180,7 @@ You can use the following mime types in your Content-Type header and provide the
 * x-www-form-urlencoded (key par value).
 * application/json (json).
 
-The schema is defined as follow.
+The schema is defined as follow. **You can only send the properties that you want to update**.
 ```
 name: String,
 lastname: String,
@@ -200,26 +201,17 @@ document: String
 #### Response
 ```
 {
-    "_id": "5b684afb09aa37668bebc4a0",
-    "name": "String",
-    "lastname": "String",
-    "status": "String",
-    "email": "String",
-    "city": "String",
-    "specialty": "String",
-    "document": "String",
-    "createdAt": "2018-08-06T13:19:55.020Z",
-    "updatedAt": "2018-08-06T13:19:55.020Z",
+    "_id": "5b6a0c66bf4d9d7be2e3c719",
+    "name": "Christian",
+    "lastname": "Barrios",
+    "status": "Active",
+    "email": "christiandbf@hotmail.com",
+    "city": "Cartagena",
+    "address": "Urb. Villa",
+    "specialty": "IT and electronic development",
+    "document": "123456789",
+    "createdAt": "2018-08-07T21:17:26.779Z",
+    "updatedAt": "2018-08-07T21:17:26.779Z",
     "__v": 0
-}
-```
-
-### Considerations
-For all endponts which use ID in a query string:
-* If the ID does not exist, the enpoint return null and 200 status code.
-* If the ID does not correspond to the format used on MongoDB or it is not provided, the enpoint return a error message and 400 status code.
-```
-{
-    "message": "Bad request, revise the parameters provided"
 }
 ```
