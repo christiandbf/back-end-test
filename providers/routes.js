@@ -4,55 +4,20 @@ const express = require('express');
 
 const Provider = require('./model');
 
+const controllers = require('./controllers');
+
 const router = express.Router();
 
 // Get all providers or receive one by id
-router.get('/', (req, res, next) => {
-  const { id } = req.query;
-  if (!id) {
-    Provider.find()
-      .then(data => res.json(data))
-      .catch(next);
-  } else {
-    Provider.findById(id)
-      .then(data => res.json(data))
-      .catch(next);
-  }
-});
+router.get('/', controllers.getProviders);
 
 // Create provider
-router.post('/', (req, res, next) => {
-  const now = Date.now();
-  if (Object.keys(req.body).length === 0) next(new Error('Body empty'));
-  const dataToSave = { ...req.body, createdAt: now, updatedAt: now };
-  const provider = new Provider(dataToSave);
-  provider.save()
-    .then(data => res.json(data))
-    .catch(next);
-});
+router.post('/', controllers.createProvider);
 
 // Delete provider by id
-router.delete('/', (req, res, next) => {
-  const { id } = req.query;
-  if (!id) next(new Error('ID is not provided'));
-  Provider.findByIdAndRemove(id)
-    .then(data => res.json(data))
-    .catch(next);
-});
+router.delete('/', controllers.deleteProvider);
 
 // Update provider by id
-router.put('/', (req, res, next) => {
-  const { id } = req.query;
-  const now = Date.now();
-  if (!id) next(new Error('ID is not provided'));
-  if (Object.keys(req.body).length === 0) next(new Error('Body empty'));
-  Provider.findByIdAndUpdate(id, { ...req.body, updatedAt: now })
-    .then(data => res.json(data))
-    .catch(next);
-});
-
-router.use((err, req, res, next) => {
-  res.status(400).json({ message: 'Bad request, revise the parameters provided' });
-});
+router.put('/', controllers.updateProvider);
 
 module.exports = router;
