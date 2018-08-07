@@ -119,7 +119,7 @@ You can use the following mime types in your Content-Type header and provide the
 * x-www-form-urlencoded (key par value).
 * application/json (json).
 
-The schema is defined as follow, but it does not make any check before to save the data.
+The schema is defined as follow. All the properties are required.
 ```
 name: String,
 lastname: String,
@@ -129,6 +129,20 @@ city: String,
 adress: String,
 specialty: String,
 document: String
+```
+
+JSON example.
+```
+{
+  "name": "Christian",
+  "lastname": "Barrios",
+  "status": "Active",
+  "email": "christiandbf@hotmail.com",
+  "city": "Cartagena",
+  "address": "Urb. Villa",
+  "specialty": "IT and electronic development",
+  "document": "123456789"
+}
 ```
 
 #### Parameters:
@@ -165,7 +179,7 @@ You can use the following mime types in your Content-Type header and provide the
 * x-www-form-urlencoded (key par value).
 * application/json (json).
 
-The schema is defined as follow, but it does not make any check before to save the data.
+The schema is defined as follow.
 ```
 name: String,
 lastname: String,
