@@ -4,6 +4,8 @@ CRUD for providers collection.
 
 ## Run
 
+* NodeJS version used 8.11.3.
+
 1. Install the dependencies needed. Run the following command in the project root folder. 
 ```
 npm install
