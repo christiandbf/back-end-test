@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-const Provider = require('./model');
+const { Provider } = require('./models');
 
 const getProviders = (req, res) => {
   const { id } = req.query;

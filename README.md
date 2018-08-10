@@ -37,7 +37,7 @@ Return all the providers saved. You can fetch one using his/her ID in a query st
 
 ```
 GET /providers/
-GET /providers?id="ID provider to get"
+GET /providers?id=********
 ```
 
 #### Parameters:
@@ -49,29 +49,31 @@ GET /providers?id="ID provider to get"
 ```
 [
     {
-        "_id": "5b19841fc2b6447803632a81",
-        "projectedStartDate": "2018-06-07T19:14:39.820Z",
-        "createdAt": "2018-06-07T19:14:39.820Z",
-        "updatedAt": "2018-06-07T19:14:39.820Z",
+        "_id": "5b6cf60d9f7098a249e13cb2",
+        "name": "Christian",
+        "lastname": "Barrios",
+        "status": "Active",
+        "email": "christiandbf@hotmail.com",
+        "city": "Cartagena",
+        "address": "Urb. Villa",
+        "specialty": "5a1ee5e6d0e8cfb9049a7904",
+        "document": "123456789",
+        "createdAt": "2018-08-10T02:18:53.479Z",
+        "updatedAt": "2018-08-10T02:32:44.015Z",
         "__v": 0
     },
     {
-        "_id": "5b1984bac2b6447803632a82",
-        "firstName": "Marko",
-        "lastName": "David",
-        "middleName": "Andres",
-        "email": "dzuck@email.com",
-        "projectedStartDate": "2018-06-07T19:17:14.842Z",
-        "employerId": 1,
-        "providerType": "1",
-        "staffStatus": "1",
-        "assignedTo": 9,
-        "status": "ACTIVE",
-        "createdBy": 1,
-        "createdAt": "2018-06-07T19:17:14.843Z",
-        "updatedBy": 1,
-        "updatedAt": "2018-06-07T19:18:40.246Z",
-        "speciality": "5a6ebab31d8b1478343d4ad6",
+        "_id": "5b6cfb04a79265a2af9922a2",
+        "name": "Luis",
+        "lastname": "Barrios",
+        "status": "Active",
+        "email": "christiandbf@hotmail.com",
+        "city": "Cartagena",
+        "address": "Urb. Villa",
+        "specialty": "5a1ee5e6d0e8cfb9049a7904",
+        "document": "123456789",
+        "createdAt": "2018-08-10T02:40:04.529Z",
+        "updatedAt": "2018-08-10T02:54:14.238Z",
         "__v": 0
     } ...
 ]
@@ -82,7 +84,7 @@ GET /providers?id="ID provider to get"
 Delete a provider. You pass the ID of the provider to delete in a query string.
 
 ```
-DELETE /providers?id="ID provider to delete"
+DELETE /providers?id=********
 ```
 
 #### Parameters:
@@ -93,17 +95,17 @@ DELETE /providers?id="ID provider to delete"
 #### Response 
 ```
 {
-    "_id": "5b659cc1ed4d8a34c496a292",
-    "createdAt": "2018-08-04T12:29:02.747Z",
-    "updatedAt": "2018-08-04T12:54:50.726Z",
-    "name": "Maria",
-    "lastname": "Fernandez",
-    "status": "False",
-    "email": "js@js.com",
-    "city": "String",
-    "adress": "String",
-    "specialty": "String",
-    "document": "String",
+    "_id": "5b6cfb04a79265a2af9922a2",
+    "name": "Luis",
+    "lastname": "Barrios",
+    "status": "Active",
+    "email": "christiandbf@hotmail.com",
+    "city": "Cartagena",
+    "address": "Urb. Villa",
+    "specialty": "5a1ee5e6d0e8cfb9049a7904",
+    "document": "123456789",
+    "createdAt": "2018-08-10T02:40:04.529Z",
+    "updatedAt": "2018-08-10T02:54:14.238Z",
     "__v": 0
 }
 ```
@@ -123,25 +125,25 @@ The schema is defined as follow. **All the properties are required**.
 ```
 name: String,
 lastname: String,
-status: String,
-email: String,
-city: String,
-adress: String,
-specialty: String,
+status: String, // Only accept "Active" or "Not active"
+email: String, // The email is checked
+city: String,  
+address: String,
+specialty: String, // ID of a spealty defined in specialties collection
 document: String
 ```
 
 JSON example.
 ```
 {
-  "name": "Christian",
-  "lastname": "Barrios",
-  "status": "Active",
-  "email": "christiandbf@hotmail.com",
-  "city": "Cartagena",
-  "address": "Urb. Villa",
-  "specialty": "IT and electronic development",
-  "document": "123456789"
+  name: 'Christian',
+  lastname: 'Barrios',
+  status: 'Active',
+  email: 'christiandbf@hotmail.com',
+  city: 'Cartagena',
+  address: 'Urb. Villa',
+  specialty: '5a1ee5e6d0e8cfb9049a7904',
+  document: '123456789',
 }
 ```
 
@@ -160,7 +162,7 @@ JSON example.
     "email": "christiandbf@hotmail.com",
     "city": "Cartagena",
     "address": "Urb. Villa",
-    "specialty": "IT and electronic development",
+    "specialty": "5a1ee5e6d0e8cfb9049a7904",
     "document": "123456789",
     "createdAt": "2018-08-07T21:17:26.779Z",
     "updatedAt": "2018-08-07T21:17:26.779Z",
@@ -173,7 +175,7 @@ JSON example.
 Update a provider. Pass the ID of the provider in a query string and send the data to update in the body. Return the last entry before to update.
 
 ```
-PUT /providers?id="ID to update"
+PUT /providers?id=********
 ```
 
 You can use the following mime types in your Content-Type header and provide the data in the body:
@@ -184,11 +186,11 @@ The schema is defined as follow. **You can only send the properties that you wan
 ```
 name: String,
 lastname: String,
-status: String,
-email: String,
-city: String,
-adress: String,
-specialty: String,
+status: String, // Only accept "Active" or "Not active"
+email: String, // The email is checked
+city: String,  
+address: String,
+specialty: String, // ID of a spealty defined in specialties collection
 document: String
 ```
 
@@ -208,7 +210,7 @@ document: String
     "email": "christiandbf@hotmail.com",
     "city": "Cartagena",
     "address": "Urb. Villa",
-    "specialty": "IT and electronic development",
+    "specialty": "5a1ee5e6d0e8cfb9049a7904",
     "document": "123456789",
     "createdAt": "2018-08-07T21:17:26.779Z",
     "updatedAt": "2018-08-07T21:17:26.779Z",

@@ -1,7 +1,17 @@
 /* eslint-disable no-useless-escape */
+/* eslint-disable prefer-arrow-callback */
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
+
+const specialtieSchema = new Schema({
+  _id: Schema.Types.ObjectId,
+  name: String,
+  createdBy: Number,
+  updatedBy: Number,
+}, {
+  timestamps: true,
+});
 
 const providerSchema = new Schema({
   name: {
@@ -34,21 +44,32 @@ const providerSchema = new Schema({
     required: true,
   },
   specialty: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Specialtie',
     required: true,
-  },
-  createdAt: {
-    type: Date,
-    default() { return new Date().getTime(); },
-  },
-  updatedAt: {
-    type: Date,
-    default() { return new Date().getTime(); },
   },
   document: {
     type: String,
     required: true,
   },
+}, {
+  timestamps: true,
 });
 
-module.exports = mongoose.model('Provider', providerSchema);
+providerSchema.pre('save', function preSave(next) {
+  const provider = this;
+  provider.createdAt = Date.now();
+  provider.updatedAt = Date.now();
+  next();
+});
+
+providerSchema.pre('update', function preUpdate(next) {
+  const provider = this;
+  provider.updatedAt = Date.now();
+  next();
+});
+
+module.exports = {
+  Provider: mongoose.model('Provider', providerSchema),
+  Specialtie: mongoose.model('Specialtie', specialtieSchema),
+};
