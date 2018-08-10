@@ -2,8 +2,6 @@
 
 const express = require('express');
 
-const Provider = require('./model');
-
 const controllers = require('./controllers');
 
 const router = express.Router();
