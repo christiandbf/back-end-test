@@ -1,22 +1,29 @@
 /* eslint-disable consistent-return */
 const { Provider } = require('./models');
+const messages = require('./messages');
 
 const getProviders = (req, res) => {
   const { id } = req.query;
+
   if (!id) {
+    // Search all providers
     Provider.find()
       .then((data) => {
-        if (!data) res.status(404).json({ message: 'There are not providers' });
-        if (data) res.status(200).json(data);
+        if (!data) return res.status(200).json([]);
+        if (data) return res.status(200).json(data);
       })
-      .catch(err => res.status(400).json({ message: err.message }));
+      .catch(err => res.status(500).json({ message: err.message }));
   } else {
+    // ID is not valid
+    if (id.length !== 24) return res.status(400).json(messages.ID_NOT_VALID);
+
+    // Search provider by ID
     Provider.findById(id)
       .then((data) => {
-        if (!data) res.status(404).json({ message: `There is not provider with ID: ${id}` });
-        if (data) res.status(200).json(data);
+        if (!data) return res.status(200).json({});
+        if (data) return res.status(200).json(data);
       })
-      .catch(err => res.status(400).json({ message: err.message }));
+      .catch(err => res.status(500).json({ message: err.message }));
   }
 };
 
