@@ -44,7 +44,7 @@ GET /providers?id=******&populate=true
 | Parameter     | Type          | Mandatory  | Description                          |
 | ------------- |---------------|------------|-------------------------------------|
 | ID            | String        | No         | Get provider by ID used in DB       |
-| ------------- |---------------|------------|-------------------------------------|
+|               |               |            |                                     |
 | populate      | String        | No         | Replace specialty ID with its value |
 
 **NOTE: only use "populate" with entries with ID which points to specialty entries on "specialties" collection. A lot of entries on "providers" collection do not implement this** 
