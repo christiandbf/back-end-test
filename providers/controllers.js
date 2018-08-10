@@ -9,7 +9,7 @@ const getProviders = (req, res) => {
     // Search all providers
     Provider.find()
       .then((data) => {
-        if (!data) return res.status(200).json([]);
+        if (!data) return res.status(404).json([]);
         if (data) return res.status(200).json(data);
       })
       .catch(err => res.status(500).json({ message: err.message }));
@@ -20,7 +20,7 @@ const getProviders = (req, res) => {
     // Search provider by ID
     Provider.findById(id)
       .then((data) => {
-        if (!data) return res.status(200).json({});
+        if (!data) return res.status(404).json({});
         if (data) return res.status(200).json(data);
       })
       .catch(err => res.status(500).json({ message: err.message }));
