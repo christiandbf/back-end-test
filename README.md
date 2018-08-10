@@ -27,7 +27,6 @@ npm start
 
 ### General information
 * All endpoints return either a JSON object or array.
-* HTTP 400 code is used for for malformed requests; the issue is on the sender's side.
 * For GET, PUT and DELETE endpoints, ID must be sent as a query string.
 * For POST and PUT endpoints, the content to save is specified in the body request with Content-Type x-www-form-urlencoded or application/json.
 
@@ -38,12 +37,17 @@ Return all the providers saved. You can fetch one using his/her ID in a query st
 ```
 GET /providers/
 GET /providers?id=********
+GET /providers?id=******&populate=true
 ```
 
 #### Parameters:
-| Parameter    | Type          | Mandatory  | Description                   |
-| ------------- |---------------|------------|-------------------------------|
-| ID            | String        | No         | Get provider by ID used in DB |
+| Parameter     | Type          | Mandatory  | Description                          |
+| ------------- |---------------|------------|-------------------------------------|
+| ID            | String        | No         | Get provider by ID used in DB       |
+| ------------- |---------------|------------|-------------------------------------|
+| populate      | String        | No         | Replace specialty ID with its value |
+
+**NOTE: only use "populate" with entries with ID which points to specialty entries on "specialties" collection. A lot of entries on "providers" collection do not implement this** 
 
 #### Response:
 ```
@@ -77,6 +81,31 @@ GET /providers?id=********
         "__v": 0
     } ...
 ]
+```
+
+#### Response with populate:
+```
+{
+    "_id": "5b6db372e7da54b54925b95d",
+    "name": "Luis",
+    "lastname": "Barrios",
+    "status": "Active",
+    "email": "christiandbf",
+    "city": "Cartagena",
+    "address": "Urb. Villa",
+    "specialty": {
+        "_id": "5a1ee5e6d0e8cfb9049a7904",
+        "name": "Adolescent Medicine",
+        "createdBy": 5028,
+        "createdAt": "2017-02-23T10:03:08.462Z",
+        "updatedBy": 35,
+        "updatedAt": "2017-11-29T00:37:07.721Z"
+    },
+    "document": "123456789",
+    "updatedAt": "2018-08-10T15:48:30.626Z",
+    "createdAt": "2018-08-10T15:46:58.832Z",
+    "__v": 0
+}
 ```
 
 ### Delete provider

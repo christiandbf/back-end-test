@@ -1,57 +1,85 @@
 /* eslint-disable consistent-return */
 const { Provider } = require('./models');
+const messages = require('./messages');
 
 const getProviders = (req, res) => {
   const { id } = req.query;
+  const populate = Boolean(req.query.populate === 'true');
+
   if (!id) {
-    Provider.find()
+    // Search all providers
+    Provider.find().populate(populate ? 'specialty' : '')
       .then((data) => {
-        if (!data) res.status(404).json({ message: 'There are not providers' });
-        if (data) res.status(200).json(data);
+        // If there are not providers returns null
+        if (!data) return res.status(404).json([]);
+        if (data) return res.status(200).json(data);
       })
-      .catch(err => res.status(400).json({ message: err.message }));
+      .catch(err => res.status(500).json({ message: err.message }));
   } else {
-    Provider.findById(id)
+    // ID is not valid
+    if (id.length !== 24) return res.status(400).json(messages.ID_NOT_VALID);
+
+    // Search provider by ID
+    Provider.findById(id).populate(populate ? 'specialty' : '')
       .then((data) => {
-        if (!data) res.status(404).json({ message: `There is not provider with ID: ${id}` });
-        if (data) res.status(200).json(data);
+        // If there is not provider with ID returns null
+        if (!data) return res.status(404).json({});
+        if (data) return res.status(200).json(data);
       })
-      .catch(err => res.status(400).json({ message: err.message }));
+      .catch(err => res.status(500).json({ message: err.message }));
   }
-};
-
-const createProvider = (req, res) => {
-  const now = Date.now();
-  const dataToSave = { ...req.body, createdAt: now, updatedAt: now };
-  const provider = new Provider(dataToSave);
-  provider.save()
-    .then(data => res.json(data))
-    .catch(err => res.status(400).json({ message: err.message }));
-};
-
-const updateProvider = (req, res) => {
-  const { id } = req.query;
-  const { createdAt } = req.body;
-  if (!id) return res.status(400).json({ message: 'You have to provide an ID' });
-  if (createdAt) return res.status(400).json({ message: 'Do not do this -_-' });
-  const now = Date.now();
-  Provider.findByIdAndUpdate(id, { ...req.body, updatedAt: now })
-    .then((data) => {
-      if (!data) res.status(400).json({ message: `There is not provider with ID ${id}` });
-      if (data) res.status(200).json(data);
-    })
-    .catch(err => res.status(400).json({ message: err.message }));
 };
 
 const deleteProvider = (req, res) => {
   const { id } = req.query;
-  if (!id) return res.status(400).json({ message: 'You have to provide an ID' });
+
+  // ID is not provided
+  if (!id) return res.status(400).json(messages.ID_NOT_PROVIDED);
+  // ID is not valid
+  if (id.length !== 24) return res.status(400).json(messages.ID_NOT_VALID);
+
+  // Remove by ID
   Provider.findByIdAndRemove(id)
     .then((data) => {
-      if (!data) res.status(404).json({ message: `There is not provider with ID: ${id}` });
-      if (data) res.status(200).json(data);
+      // If there is not provider with ID returns null
+      if (!data) return res.status(404).json({});
+      if (data) return res.status(200).json(data);
     })
-    .catch(err => res.status(400).json({ message: err.message }));
+    .catch(err => res.status(500).json({ message: err.message }));
+};
+
+const createProvider = (req, res) => {
+  const provider = new Provider(req.body);
+  const errValidation = provider.validateSync();
+
+  // Body is incorrect
+  if (errValidation) return res.status(400).json({ message: errValidation.message });
+
+  // Save provider
+  provider.save()
+    .then(data => res.json(data))
+    .catch(err => res.status(500).json({ message: err.message }));
+};
+
+const updateProvider = (req, res) => {
+  const { id } = req.query;
+
+  // ID is not provided
+  if (!id) return res.status(400).json(messages.ID_NOT_PROVIDED);
+  // ID is not valid
+  if (id.length !== 24) return res.status(400).json(messages.ID_NOT_VALID);
+
+  Provider.findByIdAndUpdate(id, req.body, { runValidators: true })
+    .then((data) => {
+      // If there is not provider with ID returns null
+      if (!data) return res.status(404).json({});
+      if (data) return res.status(200).json(data);
+    })
+    .catch((err) => {
+      // Check if it is a validation error or a server error
+      if (err.message.includes('Validation')) return res.status(400).json({ message: err.message });
+      return res.status(500).json({ message: err.message });
+    });
 };
 
 module.exports = {
