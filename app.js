@@ -16,9 +16,8 @@ const providers = require('./providers/routes');
 const app = express();
 
 // Express variables
-app.set('port', process.env.PORT || 3000);
-app.set('db user', process.env.DB_USER);
-app.set('db password', process.env.DB_PASSWORD);
+app.set('PORT', process.env.PORT || 3000);
+app.set('MONGO_URL', process.env.MONGO_URL);
 
 // Middlewares
 app.use(morgan('dev'));
@@ -34,10 +33,10 @@ app.use('/providers', providers);
 app.get('/', (req, res) => res.redirect('/index.html'));
 
 // MongoDB connection and init server
-const uri = `mongodb://${app.get('db user')}:${app.get('db password')}@ds125146.mlab.com:25146/foundation-test1`;
-mongoose.connect(uri, { useNewUrlParser: true })
+const uri = app.get('MONGO_URL');
+mongoose.connect(uri)
   .then(() => {
     console.log('DB is connected');
-    app.listen(app.get('port'), () => console.log(`API Rest on port ${app.get('port')}`));
+    app.listen(app.get('PORT'), () => console.log(`API Rest on port ${app.get('PORT')}`));
   })
   .catch(err => console.error(err.message));
