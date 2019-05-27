@@ -1,0 +1,20 @@
+version: '3'
+
+services: 
+  app:
+    container_name: back-end-test
+    restart: always
+    build: .
+    volumes: 
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports: 
+      - 8080:8080
+    links: 
+      - db
+    command: npm start
+  db:
+    container_name: mongo-db
+    image: mongo
+    ports:
+      - 27017:27017

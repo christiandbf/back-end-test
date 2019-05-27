@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Back end test - Rest API providers",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js",
+    "start": "nodemon app.js",
+    "start:prod": "node app.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
